@@ -14,7 +14,7 @@
     "lint": "oxlint --deny-warnings --report-unused-disable-directives",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "test": "bun --bun vitest",
+    "test": "bun --bun vitest && bun run check:access",
     "coverage": "vitest run --coverage",
     "typecheck": "tsc --build",
     "build": "bun --filter @repo/email --filter @repo/web --filter @repo/api --filter @repo/app build",
@@ -60,7 +60,8 @@
     "db:typecheck": "bun --cwd db typecheck",
     "infra:check": "terraform fmt -check -recursive infra/ && for root in infra/envs/*/; do test -f \"$root/.terraform.lock.hcl\" && terraform -chdir=\"$root\" init -backend=false -input=false -lockfile=readonly && terraform -chdir=\"$root\" validate || exit 1; done",
     "infra:staging": "terraform -chdir=infra/envs/staging",
-    "infra:production": "terraform -chdir=infra/envs/production"
+    "infra:production": "terraform -chdir=infra/envs/production",
+    "check:access": "npx -y viberaven@latest check db/migrations --quiet"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "~5.0.0",
